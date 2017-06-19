@@ -1,3 +1,11 @@
+# USaq Ionic App
+
+This application is made for learn about Ionic Framework.
+
+It uses a simple REST API as backend.
+
+## Other
+
 This is a starter template for [Ionic](http://ionicframework.com/docs/) projects.
 
 ## How to use this template
