@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, AlertController, LoadingController, Loading, IonicPage } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { FormBuilder, FormGroup,  Validators  } from '@angular/forms';
-import { ValidatorUtils } from  '../../utilities/validatorUtils'
+import { ValidatorUtils } from  '../../utils/validatorUtils'
 import { User } from '../../model/entity/User';
 
 @IonicPage()
