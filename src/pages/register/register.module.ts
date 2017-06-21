@@ -13,4 +13,4 @@ import { RegisterPage } from './register';
     RegisterPage
   ]
 })
-export class RegisterPageModule {}
+export class RegisterPageModule { }

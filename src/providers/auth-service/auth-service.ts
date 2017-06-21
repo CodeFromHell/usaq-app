@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class AuthServiceProvider {
-  currentUser: User = new User("","");
+  currentUser: User = new User("", "");
 
   public login(credentials) {
     if (credentials.username === null || credentials.password === null) {
@@ -34,7 +34,7 @@ export class AuthServiceProvider {
     }
   }
 
-  public getUserInfo() : User {
+  public getUserInfo(): User {
     return this.currentUser;
   }
 
