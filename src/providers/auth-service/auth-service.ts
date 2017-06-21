@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class AuthServiceProvider {
-  currentUser: User = new User('','');
+  currentUser: User = new User("","");
 
   public login(credentials) {
     if (credentials.username === null || credentials.password === null) {
@@ -14,8 +14,8 @@ export class AuthServiceProvider {
       return Observable.create(observer => {
         this.currentUser.setUsername("Alex");
         this.currentUser.setPassword("1234");
-        let access = (credentials.username === this.currentUser.getUsername
-          && credentials.password === this.currentUser.getUsername);
+        let access = (credentials.username === this.currentUser.getUsername()
+          && credentials.password === this.currentUser.getPassword());
         observer.next(access);
         observer.complete();
       });
