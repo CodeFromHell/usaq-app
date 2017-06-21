@@ -26,6 +26,18 @@ page-login {
          color: #FFFFFF;
      }
 
+     ion-input {
+       border-bottom-style: solid;
+       border-bottom-width: 1px;
+     }
+
+     ion-label {
+        text-align: left;
+        color: white;
+        padding-left: 20px;
+        font-style: italic;
+     }
+
      .signup-col {
        margin: 0px 16px 0px 16px;
        padding-bottom: 20px;
