@@ -35,7 +35,7 @@ export class LoginPage {
   }
 
   public login() {
-    this.presentLoadingCustom();
+    this.showLoading();
     this.auth.login(this.registerCredentials).subscribe(allowed => {
       if (allowed) {
         this.nav.setRoot('HomePage');
@@ -47,22 +47,6 @@ export class LoginPage {
         this.showError(error);
       });
   }
-
-  presentLoadingCustom() {
-  let loading = this.loadingCtrl.create({
-    spinner: 'hide',
-    content: `
-      <div style='background:#FFFFFF'>
-      </div>`,
-    duration: 5000
-  });
-
-  loading.onDidDismiss(() => {
-    console.log('Dismissed loading');
-  });
-
-  loading.present();
-}
 
 
   showLoading() {
