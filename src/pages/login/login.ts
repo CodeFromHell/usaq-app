@@ -13,7 +13,7 @@ import { User } from '../../model/entity/User';
 
 export class LoginPage {
   loading: Loading;
-  registerCredentials : User = { username : '' , password : ''};
+  registerCredentials : User ;
   loginPageForm : FormGroup;
 
   constructor(private nav: NavController, private auth: AuthServiceProvider,
@@ -23,6 +23,7 @@ export class LoginPage {
  }
 
  public init(){
+       this.registerCredentials = new User('','');
        this.loginPageForm = this.formBuilder.group({
            username: ['',  Validators.compose([Validators.pattern(ValidatorUtils.REGEX_ALPHANUMERIC), Validators.required])],
            password: ['',  Validators.compose([Validators.minLength(ValidatorUtils.MIN_SIZE_PASSWORD), Validators.required])]
@@ -34,7 +35,7 @@ export class LoginPage {
   }
 
   public login() {
-    this.showLoading();
+    this.presentLoadingCustom();
     this.auth.login(this.registerCredentials).subscribe(allowed => {
       if (allowed) {
         this.nav.setRoot('HomePage');
@@ -46,6 +47,23 @@ export class LoginPage {
         this.showError(error);
       });
   }
+
+  presentLoadingCustom() {
+  let loading = this.loadingCtrl.create({
+    spinner: 'hide',
+    content: `
+      <div style='background:#FFFFFF'>
+      </div>`,
+    duration: 5000
+  });
+
+  loading.onDidDismiss(() => {
+    console.log('Dismissed loading');
+  });
+
+  loading.present();
+}
+
 
   showLoading() {
     this.loading = this.loadingCtrl.create({

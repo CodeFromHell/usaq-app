@@ -5,16 +5,17 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class AuthServiceProvider {
-  currentUser: User;
+  currentUser: User = new User('','');
 
   public login(credentials) {
     if (credentials.username === null || credentials.password === null) {
       return Observable.throw("Please insert credentials");
     } else {
       return Observable.create(observer => {
-        this.currentUser = { username : 'Alex' , password : '1234'};
-        let access = (credentials.username === this.currentUser.username
-          && credentials.password === this.currentUser.password);
+        this.currentUser.setUsername("Alex");
+        this.currentUser.setPassword("1234");
+        let access = (credentials.username === this.currentUser.getUsername
+          && credentials.password === this.currentUser.getUsername);
         observer.next(access);
         observer.complete();
       });
