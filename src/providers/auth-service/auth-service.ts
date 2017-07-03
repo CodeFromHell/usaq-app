@@ -12,9 +12,6 @@ import 'rxjs/add/operator/distinctUntilChanged';
 @Injectable()
 export class AuthServiceProvider {
   currentUser : User ;
-  allUsers  : User;
-  private searchUsers = new Subject<string>();
-
   constructor (private userServiceProvider : UserServiceProvider) {
 
   }
@@ -25,17 +22,12 @@ export class AuthServiceProvider {
     } else {
       return Observable.create(observer => {
         this.currentUser = new User("","");
-        this.allUsers = new User("","");
-        this.userServiceProvider.getUsers().subscribe(user => this.allUsers = user);
-        console.log("allUsers->" + this.allUsers.getUsername());
-        console.log("allUsers->" + this.allUsers.getPassword());
         this.userServiceProvider.getUserByUsername(credentials.username)
-        .subscribe(user => this.currentUser = user);
-          console.log("currentUser --> " + this.currentUser.getUsername());
-        let access = (credentials.username === this.currentUser.getUsername()
-          && credentials.password === this.currentUser.getPassword());
-        observer.next(access);
-        observer.complete();
+        .subscribe(user => { this.currentUser = user
+          console.log(this.currentUser[0]);
+          let access = (credentials.username === this.currentUser[0].username
+            && credentials.password === this.currentUser[0].password);
+        });
       });
     }
   }
@@ -63,11 +55,6 @@ export class AuthServiceProvider {
       observer.complete();
     });
   }
-
-  // Push a search term into the observable stream.
-search(username: string): void {
-  this.searchUsers.next(username);
-}
 
 
 }
