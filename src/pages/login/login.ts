@@ -42,10 +42,11 @@ export class LoginPage {
         this.nav.setRoot('HomePage');
       } else {
         this.showError('Access denied');
+        this.init();
       }
     },
       error => {
-        this.showError(error);
+        this.showError('Access denied');
       });
   }
 
