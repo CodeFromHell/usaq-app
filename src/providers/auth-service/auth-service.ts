@@ -27,6 +27,8 @@ export class AuthServiceProvider {
           console.log(this.currentUser[0]);
           let access = (credentials.username === this.currentUser[0].username
             && credentials.password === this.currentUser[0].password);
+            observer.next(access);
+            observer.complete();
         });
       });
     }
