@@ -45,6 +45,10 @@ export class AuthServiceProvider {
         return Observable.throw("Please insert credentials");
       } else {
         return Observable.create(observer => {
+          this.userServiceProvider.createUser(credentials)
+          .subscribe(response => {
+                  console.log(response);  
+                  });
           observer.next(true);
           observer.complete();
         });
