@@ -19,53 +19,52 @@ export class LoginPage {
   constructor(private nav: NavController, private auth: AuthServiceProvider,
     private alertCtrl: AlertController, private loadingCtrl: LoadingController,
     public formBuilder: FormBuilder) {
-    this.init();
-  }
+      this.init();
+    }
 
-  public init() {
-    this.registerCredentials = new User('', '');
-    this.loginPageForm = this.formBuilder.group({
-      username: ['', Validators.compose([Validators.pattern(ValidatorUtils.REGEX_ALPHANUMERIC), Validators.required])],
-      password: ['', Validators.compose([Validators.minLength(ValidatorUtils.MIN_SIZE_PASSWORD), Validators.required])]
-    });
-  }
-
-  public createAccount() {
-    this.nav.push('RegisterPage');
-  }
-
-  public login() {
-    this.showLoading();
-
-    this.auth.login(this.registerCredentials).subscribe(allowed => {
-      if (allowed) {
-        this.nav.setRoot('HomePage');
-      } else {
-        this.showError('Access denied');
-      }
-    },
-      error => {
-        this.showError('Access denied');
+    public init() {
+      this.registerCredentials = new User('', '');
+      this.loginPageForm = this.formBuilder.group({
+        username: ['', Validators.compose([Validators.pattern(ValidatorUtils.REGEX_ALPHANUMERIC), Validators.required])],
+        password: ['', Validators.compose([Validators.minLength(ValidatorUtils.MIN_SIZE_PASSWORD), Validators.required])]
       });
+    }
+
+    public createAccount() {
+      this.nav.setRoot('RegisterPage');
+    }
+
+    public login() {
+      this.showLoading();
+      this.auth.login(this.registerCredentials).subscribe(allowed => {
+        if (allowed) {
+          this.loading.dismiss();
+          this.nav.setRoot('HomePage');
+        } else {
+          this.showError('Access denied');
+        }
+      },
+      error => {
+        this.showError(error);
+      });
+    }
+
+
+    showLoading() {
+      this.loading = this.loadingCtrl.create({
+        content: 'Please wait...',
+      });
+      this.loading.present();
+    }
+
+    showError(text) {
+      this.loading.dismiss();
+
+      let alert = this.alertCtrl.create({
+        title: 'Fail',
+        subTitle: text,
+        buttons: ['OK']
+      });
+      alert.present(prompt);
+    }
   }
-
-
-  showLoading() {
-    this.loading = this.loadingCtrl.create({
-      content: 'Please wait...',
-      dismissOnPageChange: true
-    });
-    this.loading.present();
-  }
-
-  showError(text) {
-    this.loading.dismiss();
-
-    let alert = this.alertCtrl.create({
-      title: 'Fail',
-      subTitle: text,
-      buttons: ['OK']
-    });
-    alert.present(prompt);
-  }
-}
