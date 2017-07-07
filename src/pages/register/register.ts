@@ -65,7 +65,7 @@ export class RegisterPage {
         username: ['', Validators.compose([Validators.pattern(ValidatorUtils.REGEX_ALPHANUMERIC), Validators.required])],
         password: ['', Validators.compose([Validators.minLength(ValidatorUtils.MIN_SIZE_PASSWORD), Validators.required])],
         password_repeat: ['', Validators.compose([Validators.minLength(ValidatorUtils.MIN_SIZE_PASSWORD), Validators.required])]
-      }, { 'validator': ValidatorUtils.isPasswowrdMatching });
+      }, { 'validator': ValidatorUtils.isPasswordMatching });
       this.password_repeat = this.registerPageForm.controls['password_repeat'];
   }
 

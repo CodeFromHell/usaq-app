@@ -5,7 +5,7 @@ export class ValidatorUtils {
   public static MIN_SIZE_PASSWORD  = 4;
 
 
-  static isPasswowrdMatching(group: FormGroup){
+  static isPasswordMatching(group: FormGroup){
     var firstPassword = group.controls['password'].value;
     var secondPassword = group.controls['password_repeat'].value;
     if((firstPassword && secondPassword) && (firstPassword != secondPassword)){
