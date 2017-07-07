@@ -4,16 +4,21 @@ import { Http, Response } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
 import { User } from '../../model/entity/User';
 
-
+import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class UserServiceProvider  {
-  private userUrl ='api/user';
-  constructor(private http: Http) {}
+  private baseUrl ='http://usaq.solus.hol.es/api/user/';
+  private headers = new Headers();
+
+  constructor(private http: Http) {
+    this.headers.append('Content-Type', 'application/json');
+    this.headers.append('Accept' , 'application/json');
+  }
 
   getUser(username: string): Observable<User> {
-    const url = `${this.userUrl}/?username=${username}`;
+    const url = `${this.baseUrl }/?username=${username}`;
     return this.http
     .get(url)
     .map(this.extractData);
@@ -21,14 +26,14 @@ export class UserServiceProvider  {
 
   getUsers() : Observable<User> {
     return this.http
-    .get(this.userUrl)
+    .get(this.baseUrl)
     .map(this.extractData);
   }
 
-  createUser(user:User): Observable<User> {
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.userUrl, user, options)
+  createUser(user:User): Observable<Response> {
+    var endPoint =  "register";
+    let options = new RequestOptions({ headers: this.headers });
+    return this.http.post(this.baseUrl + endPoint, JSON.stringify(user), options)
     .map(this.extractResponse)
     .catch(this.handleError);
   }
@@ -39,7 +44,6 @@ export class UserServiceProvider  {
 
   extractResponse(res: Response) {
     let body = res.json();
-    console.log(body);
     return body || {};
   }
 

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { User } from '../../model/entity/User';
 import { UserServiceProvider } from '../user-service/user-service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -8,9 +7,8 @@ import 'rxjs/add/operator/catch';
 @Injectable()
 export class AuthServiceProvider {
   currentUser : any ;
-  constructor (private userServiceProvider : UserServiceProvider) {
-
-  }
+  registerResult : boolean = false;
+  constructor (private userServiceProvider : UserServiceProvider) {}
 
   public login(credentials) {
     if (credentials.username === null || credentials.password === null) {
@@ -26,18 +24,18 @@ export class AuthServiceProvider {
             observer.complete();
           } else {
             let access = this.validateLogin(credentials,this.currentUser);
-              observer.next(access);
-              observer.complete();
-            }
-          })
-        });
-      }
+            observer.next(access);
+            observer.complete();
+          }
+        })
+      });
     }
+  }
 
-    private validateLogin (credentials,currentUser) {
-      let access = (credentials.username === currentUser[0].username
-        && credentials.password === currentUser[0].password);
-        return access;
+  private validateLogin (credentials,currentUser) {
+    let access = (credentials.username === currentUser[0].username
+      && credentials.password === currentUser[0].password);
+      return access;
     }
 
     public register(credentials) {
@@ -46,11 +44,11 @@ export class AuthServiceProvider {
       } else {
         return Observable.create(observer => {
           this.userServiceProvider.createUser(credentials)
-          .subscribe(response => {
-                  console.log(response);  
-                  });
-          observer.next(true);
-          observer.complete();
+          .subscribe(body => {
+            this.registerResult =  (body['result'] == 'OK')  ? true : false;
+            observer.next(this.registerResult);
+            observer.complete();
+          });
         });
       }
     }

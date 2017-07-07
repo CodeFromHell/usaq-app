@@ -4,71 +4,100 @@ page-register {
     background: #000000;
 
     .logo-row {
-      padding-top: 50px;
-      padding-bottom: 20px;
     }
 
     .login-box {
       background: #000000;
-      padding: 20px 20px 0px 20px;
-      margin-top: 30px;
     }
 
     ion-row {
-       align-items: center;
-       text-align: center;
-     }
+      align-items: center;
+      text-align: center;
+    }
 
-     ion-item {
-         font-size: 0.9em;
-         font-size: 0.9em;
-         background: #000000;
-         color: #FFFFFF;
-     }
+    ion-item {
+      font-size: 0.9em;
+      font-size: 0.9em;
+      background: #000000;
+      color: #FFFFFF;
+    }
 
-     ion-input {
-       border-bottom-style: solid;
-       border-bottom-width: 1px;
-     }
+    ion-input {
+      border-bottom-style: solid;
+      border-bottom-width: 1px;
+    }
 
-     ion-label {
-        text-align: left;
-        color: white;
-        padding-left: 20px;
-        font-style: italic;
-     }
+    ion-label {
+      text-align: left;
+      color: white;
+      font-size: 10px !important;
+      font-style: italic;
+    }
 
-     .signup-col {
-       margin: 0px 16px 0px 16px;
-       padding-bottom: 20px;
-     }
+    .labelFloating {
+      font-size: 13px !important;
+      font-style: normal;
+    }
 
-     .item-inner {
-       border-bottom-color: #ffffff !important;
-       box-shadow: none !important;
-     }
+    .signup-col {
+      margin: 0px 16px 0px 16px;
+      padding-bottom: 20px;
+    }
 
-     .submit-btn {
-       background: #000000;
-       border-radius: 30px !important;
-       border: 1px solid #ffffff;
-     }
+    .item-inner {
+      border-bottom-color: #ffffff !important;
+      box-shadow: none !important;
+    }
 
-     .submit-btn:hover {
-       background: #FFFFFF !important;
-       color : black !important;
-       border-radius: 30px !important;
-       border: 1px solid #ffffff;
-     }
+    .submit-btn {
+      background: #000000;
+      border-radius: 30px !important;
+      color: aqua;
+      border: 1px solid #ffffff;
+    }
 
-     .register-btn {
-       color: #ffffff;
-       font-size: 0.8em;
-     }
+    .submit-btn:hover {
+      background: #ffffff !important;
+      color : #000000 !important;
+      border-radius: 30px !important;
+      border: 1px solid #ffffff;
+    }
 
-     .register-btn:hover {
-       background: #000000 !important;
-     }
+    .register-btn {
+      text-decoration: underline;
+      color: #ffffff;
+      font-size: 0.8em;
+    }
+
+    .register-btn:hover {
+      background: #000000 !important;
+    }
+
+    .list-md .item-input:last-child {
+      border-bottom: none;
+    }
+
+    .list-md .item-input.item-input-has-focus:last-child, .list-md .item-input.input-has-focus:last-child {
+      border-bottom: none !important;
+      box-shadow : none !important;
+    }
+
+    .list-md .item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child,
+    .list-md .item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child {
+      border-bottom: none !important;
+      box-shadow : none !important;
+    }
+
+    .list-md .item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus):last-child {
+      border-bottom: none !important;
+      box-shadow : none !important;
+    }
+
+    .labelRegistered{
+      color: white;
+      font-size: 0.8em !important;
+      font-style:   normal;
+    }
 
   }
 

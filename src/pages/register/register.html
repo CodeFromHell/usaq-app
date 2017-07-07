@@ -1,31 +1,46 @@
-<ion-header>
-  <ion-navbar color="dark">
-    <ion-title>Register</ion-title>
-  </ion-navbar>
-</ion-header>
 <ion-content class="login-content" padding>
-  <div class="login-box">
-    <form (ngSubmit)="register()" #registerForm="ngForm">
+  <ion-row class="logo-row">
+    <ion-col></ion-col>
+    <ion-col>
+      <ion-img   [@fadeIn]="logoState"  width="200px"  height="100px" src="assets/img/title.png"> </ion-img>
+    </ion-col>
+    <ion-col></ion-col>
+  </ion-row>
+  <div class="login-box" [@fadeIn]="formInputState">
+    <form (ngSubmit)="register()" [formGroup] = "registerPageForm"  #registerForm="ngForm">
+      <ion-list no-lines>
+        <ion-item>
+          <ion-label  class="labelFloating" floating>Usuario</ion-label>
+          <ion-input type="text"   formControlName="username" name="username" [(ngModel)]="registerCredentials.username" required></ion-input>
+        </ion-item>
+        <ion-item  text-wrap *ngIf="!registerPageForm.controls.username.valid  && (registerPageForm.controls.username.dirty)">
+          <ion-icon [ngClass]="{'hide': true }" name="ios-information-circle-outline" item-left></ion-icon>
+          <ion-label item-left>Solo letras y números</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label  class="labelFloating" floating>Password</ion-label>
+          <ion-input type="password" formControlName="password" name="password" [(ngModel)]="registerCredentials.password" required></ion-input>
+        </ion-item>
+        <ion-item text-wrap *ngIf="!registerPageForm.controls.password.valid  && (registerPageForm.controls.password.dirty)">
+          <ion-icon [ngClass]="{'hide': true }" name="ios-information-circle-outline" item-left></ion-icon>
+          <ion-label item-left>Debe tener al menos 4 caracteres</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label  class="labelFloating" floating>Confirmar password</ion-label>
+          <ion-input type="password" formControlName="password_repeat" name="password_confirm" [(ngModel)]="registerCredentials.password_repeat"  required></ion-input>
+        </ion-item>
+        <ion-item text-wrap *ngIf="password_repeat.hasError('password_match') && (registerPageForm.controls.password_repeat.dirty)">
+          <ion-icon [ngClass]="{'hide': true }" name="ios-information-circle-outline" item-left></ion-icon>
+          <ion-label item-left>Las contraseñas no coinciden  </ion-label>
+        </ion-item>
+      </ion-list>
       <ion-row>
-        <ion-col>
-          <ion-list no-lines>
-            <ion-item>
-              <ion-input type="text" placeholder="Username" name="username" [(ngModel)]="registerCredentials.username" required></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-input type="password" placeholder="Password" name="password" [(ngModel)]="registerCredentials.password" required></ion-input>
-            </ion-item>
-            <ion-item>
-            </ion-item>
-          </ion-list>
+        <ion-col [@fadeIn]="buttonRegisterState" class="signup-col" >
+          <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Registrar</button>
+          <ion-label class="labelRegistered" text-center> ¿Ya estás registrado? </ion-label>
+          <button ion-button class="register-btn" block clear (click)="goToLogin()"> Entra</button>
         </ion-col>
       </ion-row>
-      <ion-row>
-        <ion-col class="signup-col">
-          <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Register</button>
-        </ion-col>
-      </ion-row>
-
     </form>
   </div>
 </ion-content>

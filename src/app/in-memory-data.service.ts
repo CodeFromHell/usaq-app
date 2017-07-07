@@ -1,9 +1,9 @@
 import { InMemoryDbService } from 'angular-in-memory-web-api';
-import { User } from '../model/entity/User';
 export class InMemoryDataService implements InMemoryDbService {
   createDb() {
     const user = [
-       {username :  "Alex" , password : "1234" }
+       {username :  "Alex" , password : "1234" },
+       {username :  "Ramon" , password : "4321" }
     ];
     return {user};
   }
