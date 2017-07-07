@@ -3,13 +3,13 @@ import { Observable }     from 'rxjs/Observable';
 import { Http, Response } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
 import { User } from '../../model/entity/User';
+import { ApiUtils } from '../../utils/apiUtils';
 
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class UserServiceProvider  {
-  private baseUrl ='http://usaq.solus.hol.es/api/user/';
   private headers = new Headers();
 
   constructor(private http: Http) {
@@ -18,22 +18,14 @@ export class UserServiceProvider  {
   }
 
   getUser(username: string): Observable<User> {
-    const url = `${this.baseUrl }/?username=${username}`;
     return this.http
-    .get(url)
-    .map(this.extractData);
-  }
-
-  getUsers() : Observable<User> {
-    return this.http
-    .get(this.baseUrl)
+    .get(ApiUtils.LOGIN_URL)
     .map(this.extractData);
   }
 
   createUser(user:User): Observable<Response> {
-    var endPoint =  "register";
     let options = new RequestOptions({ headers: this.headers });
-    return this.http.post(this.baseUrl + endPoint, JSON.stringify(user), options)
+    return this.http.post(ApiUtils.REGISTER_URL, JSON.stringify(user), options)
     .map(this.extractResponse)
     .catch(this.handleError);
   }

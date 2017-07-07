@@ -7,7 +7,7 @@
     <ion-col></ion-col>
   </ion-row>
   <div class="login-box" [@fadeIn]="formInputState">
-    <form (ngSubmit)="register()" [formGroup] = "registerPageForm"  #registerForm="ngForm">
+    <form  [formGroup] = "registerPageForm"  #registerForm="ngForm">
       <ion-list no-lines>
         <ion-item>
           <ion-label  class="labelFloating" floating>Usuario</ion-label>
@@ -36,7 +36,7 @@
       </ion-list>
       <ion-row>
         <ion-col [@fadeIn]="buttonRegisterState" class="signup-col" >
-          <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Registrar</button>
+          <button ion-button class="submit-btn" full type="submit" (click)="register()" [disabled]="!registerForm.form.valid">Registrar</button>
           <ion-label class="labelRegistered" text-center> ¿Ya estás registrado? </ion-label>
           <button ion-button class="register-btn" block clear (click)="goToLogin()"> Entra</button>
         </ion-col>
