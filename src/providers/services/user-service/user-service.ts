@@ -24,7 +24,7 @@ export class UserServiceProvider  {
     .map(this.extractData);
   }
 
-  loginUser(user:User): Observable<User> {
+  loginUser(user:User): Observable<Response> {
     return this.http
     .post(UserURL.USER_LOGIN_URL,User.toJSONFromUser(user), this.options)
     .map(this.extractResponse)
@@ -48,8 +48,7 @@ export class UserServiceProvider  {
   }
 
   handleError (error: Response | any) {
-    console.error(error.message || error);
-    return Observable.throw(error.message || error);
+    return Observable.throw(error);
   }
 
 }
