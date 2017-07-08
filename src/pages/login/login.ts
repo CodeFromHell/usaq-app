@@ -1,6 +1,6 @@
 import { Component, trigger, state, style, transition, animate } from '@angular/core';
 import { NavController, AlertController, LoadingController, Loading, IonicPage } from 'ionic-angular';
-import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
+import { AuthServiceProvider } from '../../providers/services/auth-service/auth-service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidatorUtils } from '../../utils/validatorUtils'
 import { User } from '../../model/entity/User';
@@ -60,7 +60,7 @@ export class LoginPage {
     }
 
     public init() {
-      this.registerCredentials = new User('', '', '');
+      this.registerCredentials = new User('', '');
       this.loginPageForm = this.formBuilder.group({
         username: ['', Validators.compose([Validators.pattern(ValidatorUtils.REGEX_ALPHANUMERIC), Validators.required])],
         password: ['', Validators.compose([Validators.minLength(ValidatorUtils.MIN_SIZE_PASSWORD), Validators.required])]
