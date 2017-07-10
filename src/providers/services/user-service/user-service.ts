@@ -11,11 +11,12 @@ import 'rxjs/add/operator/catch';
 @Injectable()
 export class UserServiceProvider  {
   private headers = new Headers();
-  private options = new RequestOptions({ headers: this.headers });
+  private options : RequestOptions;
 
   constructor(private http: Http) {
     this.headers.append('Content-Type', 'application/json');
     this.headers.append('Accept' , 'application/json');
+    this.options = new RequestOptions({ headers: this.headers });
   }
 
   getUser(username: string): Observable<User> {
@@ -24,7 +25,7 @@ export class UserServiceProvider  {
     .map(this.extractData);
   }
 
-  loginUser(user:User): Observable<Response> {
+  loginUser(user: User): Observable<Response> {
     return this.http
     .post(UserURL.USER_LOGIN_URL,User.toJSONFromUser(user), this.options)
     .map(this.extractResponse)
@@ -48,6 +49,7 @@ export class UserServiceProvider  {
   }
 
   handleError (error: Response | any) {
+    console.log(error);
     return Observable.throw(error);
   }
 

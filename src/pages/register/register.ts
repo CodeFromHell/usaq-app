@@ -60,7 +60,7 @@ export class RegisterPage {
     }
 
     public init() {
-      this.registerCredentials = new User('', '');
+      this.registerCredentials = new User('', '', '');
       this.registerPageForm = this.formBuilder.group({
         username: ['', Validators.compose([Validators.pattern(ValidatorUtils.REGEX_ALPHANUMERIC), Validators.required])],
         password: ['', Validators.compose([Validators.minLength(ValidatorUtils.MIN_SIZE_PASSWORD), Validators.required])],

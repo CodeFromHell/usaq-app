@@ -44,7 +44,7 @@ export class AuthServiceProvider {
     }
 
     public register(credentials) {
-      if (credentials.email === null || credentials.password === null) {
+      if (credentials.email === null || credentials.password === null || credentials.password_repeat === null) {
         return Observable.throw("Please insert credentials");
       } else {
         return Observable.create(observer => {
