@@ -9,7 +9,8 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class AuthServiceProvider {
-  registerResult : boolean = false;
+  responseResult : boolean = false;
+
   constructor (private userServiceProvider : UserServiceProvider,
     private localStorageService: LocalStorageService) {
     }
@@ -26,11 +27,14 @@ export class AuthServiceProvider {
               if(response['status'] === ResponseStatus.ERROR_INTERNAL_SERVER){
                 observer.next(false);
                 observer.complete();
+              } else if(response['stauts'] === ResponseStatus.ERROR_BAD_REQUEST){
+                observer.next(false);
+                observer.complete();
               }
             } else if(response.hasOwnProperty('token')) {
               console.log(response['token']);
               this.localStorageService
-              .set('credentials', JSON.stringify({token: response['token'] , username: credentials.username }));
+              .set('credentials', {token: response['token'] , username: credentials.username });
               console.log(this.localStorageService.get("credentials"));
               observer.next(true);
               observer.complete();
@@ -43,6 +47,22 @@ export class AuthServiceProvider {
       }
     }
 
+    public logout() {
+      var credentials : {} =  this.localStorageService.get("credentials");
+      return Observable.create(observer => {
+        this.userServiceProvider
+        .logoutUser(JSON.stringify(credentials['token']))
+        .subscribe( response => {
+          this.responseResult =  (response['result'] == 'OK')  ? true : false;
+          observer.next(this.responseResult);
+          observer.complete();
+        } , error => {
+          observer.next(false);
+          observer.complete();
+        })
+      });
+    }
+
     public register(credentials) {
       if (credentials.email === null || credentials.password === null || credentials.password_repeat === null) {
         return Observable.throw("Please insert credentials");
@@ -50,21 +70,12 @@ export class AuthServiceProvider {
         return Observable.create(observer => {
           this.userServiceProvider.registerUser(credentials)
           .subscribe(response => {
-            this.registerResult =  (response['result'] == 'OK')  ? true : false;
-            observer.next(this.registerResult);
+            this.responseResult =  (response['result'] == 'OK')  ? true : false;
+            observer.next(this.responseResult);
             observer.complete();
           });
         });
       }
     }
-
-
-    public logout() {
-      return Observable.create(observer => {
-        observer.next(true);
-        observer.complete();
-      });
-    }
-
 
   }

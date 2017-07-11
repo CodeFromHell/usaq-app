@@ -39,6 +39,15 @@ export class UserServiceProvider  {
     .catch(this.handleError);
   }
 
+  logoutUser(token : string){
+    this.headers.append('X-Auth-Token' , token);
+    this.options = new RequestOptions({ headers: this.headers });
+    return this.http
+    .post(UserURL.USER_LOGOUT_URL, token , this.options)
+    .map(this.extractResponse)
+    .catch(this.handleError);
+  }
+
   extractData(res: Response) : User {
     return User.toUserFromJSON(res.json().data);
   }
