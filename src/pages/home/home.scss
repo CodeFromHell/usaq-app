@@ -41,14 +41,16 @@ page-home {
     width: 20px;
     height: 20px;
     border-radius: 80%;
-    background: radial-gradient(circle, transparent 81px, white 81px);
+    background: white;
     border: 3px solid transparent;
-    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#cb60b3+0,26a8c9+49,ad1283+100,de47ac+100 */
-    background: #cb60b3; /* Old browsers */
-    background: -moz-linear-gradient(-45deg,  #cb60b3 0%, #26a8c9 49%, #ad1283 100%, #de47ac 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(-45deg,  #cb60b3 0%,#26a8c9 49%,#ad1283 100%,#de47ac 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(135deg,  #cb60b3 0%,#26a8c9 49%,#ad1283 100%,#de47ac 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cb60b3', endColorstr='#de47ac',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+  }
+
+  .iconListGroup{
+    width: 20px;
+    height: 20px;
+    border-radius: 80%;
+    background: white;
+    border: 3px solid transparent;
   }
 
   .home-item-avatar{
