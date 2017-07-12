@@ -9,7 +9,7 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class AuthServiceProvider {
-  registerResult : boolean = false;
+
   constructor (private userServiceProvider : UserServiceProvider,
     private localStorageService: LocalStorageService) {
     }
@@ -22,13 +22,11 @@ export class AuthServiceProvider {
           this.userServiceProvider
           .loginUser(credentials)
           .subscribe(response =>  {
-            console.log(response);
             if(response.hasOwnProperty('status')) {
               if(response['status'] === ResponseStatus.OK) {
                 var jsonData = response.json().data;
                 this.localStorageService
-                .set('credentials', JSON.stringify({token: jsonData.token , username: credentials.username }));
-                console.log(this.localStorageService.get("credentials"));
+                .set('credentials', JSON.stringify({token: jsonData.token , username: jsonData.username }));
                 observer.next(true);
                 observer.complete();
               }
