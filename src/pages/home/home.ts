@@ -10,14 +10,11 @@ import { LocalStorageService } from 'angular-2-local-storage';
 })
 export class HomePage {
   loading: Loading;
-
+  credentials : {} ;
   constructor(private nav: NavController, private auth: AuthServiceProvider,
     private alertCtrl: AlertController, private loadingCtrl: LoadingController,
     private localStorageService: LocalStorageService) {
-    }
-
-    ngOnInit(): void {
-
+      this.credentials = this.localStorageService.get('credentials');
     }
 
     logout() {
