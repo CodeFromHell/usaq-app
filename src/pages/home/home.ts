@@ -29,7 +29,7 @@ export class HomePage {
         }
       },
       error => {
-        this.showError(error);
+        console.log("Error", error);
       });
     }
 

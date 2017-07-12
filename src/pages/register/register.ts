@@ -74,10 +74,12 @@ export class RegisterPage {
         if (response === true) {
           this.createSuccess = true;
           this.showPopup("Success", "Account created.");
+        } else {
+          this.showPopup("Error", response.json()['detail']);
         }
       },
       error => {
-        this.showPopup("Error", error.json()['detail']);
+        console.log("Error", error);
       });
     }
 

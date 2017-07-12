@@ -82,7 +82,7 @@ export class LoginPage {
         }
       },
       error => {
-        this.showError(error);
+        console.log("Error", error);
       });
     }
 
