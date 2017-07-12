@@ -49,7 +49,7 @@ export class AuthServiceProvider {
           .subscribe(response => {
             if(response.hasOwnProperty('status')){
               if(response['status'] === ResponseStatus.OK) {
-                observer.next(ResponseStatus.OK);
+                observer.next(true);
                 observer.complete();
               }
             }
@@ -70,7 +70,7 @@ export class AuthServiceProvider {
         .subscribe( response => {
           if(response.hasOwnProperty('status')){
             if(response['status'] === ResponseStatus.OK) {
-              observer.next(ResponseStatus.OK);
+              observer.next(true);
               observer.complete();
             }
           }

@@ -22,8 +22,8 @@ export class HomePage {
 
     logout() {
       this.showLoading();
-      this.auth.logout().subscribe(allowed => {
-        if (allowed) {
+      this.auth.logout().subscribe(response => {
+        if (response === true) {
           this.localStorageService.clearAll();
           this.loading.dismiss();
           this.nav.setRoot('LoginPage');
