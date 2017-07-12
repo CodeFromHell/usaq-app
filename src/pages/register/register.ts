@@ -67,42 +67,41 @@ export class RegisterPage {
         password_repeat: ['', Validators.compose([Validators.minLength(ValidatorUtils.MIN_SIZE_PASSWORD), Validators.required])]
       }, { 'validator': ValidatorUtils.isPasswordMatching });
       this.password_repeat = this.registerPageForm.controls['password_repeat'];
-  }
+    }
 
-  public register() {
-    this.auth.register(this.registerCredentials).subscribe(success => {
-      if (success) {
-        this.createSuccess = true;
-        this.showPopup("Success", "Account created.");
-      } else {
-        this.showPopup("Error", "Problem creating account.");
-      }
-    },
-    error => {
-      this.showPopup("Error", error);
-    });
-  }
+    public register() {
+      this.auth.register(this.registerCredentials).subscribe(response => {
+        if (response === true) {
+          this.createSuccess = true;
+          this.showPopup("Success", "Account created.");
+        }
+      },
+      error => {
+        console.log("Awqe");
+        this.showPopup("Error", error.json()['detail']);
+      });
+    }
 
-  public goToLogin(){
+    public goToLogin(){
       this.nav.push('LoginPage');
-  }
+    }
 
-  showPopup(title, text) {
-    let alert = this.alertCtrl.create({
-      title: title,
-      subTitle: text,
-      buttons: [
-        {
-          text: 'OK',
-          handler: data => {
-            if (this.createSuccess) {
-              this.nav.setRoot('HomePage');
-              this.nav.popToRoot();
+    showPopup(title, text) {
+      let alert = this.alertCtrl.create({
+        title: title,
+        subTitle: text,
+        buttons: [
+          {
+            text: 'OK',
+            handler: data => {
+              if (this.createSuccess) {
+                this.nav.setRoot('HomePage');
+                this.nav.popToRoot();
+              }
             }
           }
-        }
-      ]
-    });
-    alert.present();
+        ]
+      });
+      alert.present();
+    }
   }
-}

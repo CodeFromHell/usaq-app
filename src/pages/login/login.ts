@@ -73,12 +73,12 @@ export class LoginPage {
 
     public login() {
       this.showLoading();
-      this.auth.login(this.registerCredentials).subscribe(allowed => {
-        if (allowed) {
+      this.auth.login(this.registerCredentials).subscribe(response => {
+        if (response === true) {
           this.loading.dismiss();
           this.nav.setRoot('HomePage');
         } else {
-          this.showError('Access denied');
+          this.showError(response.json()['detail']);
         }
       },
       error => {

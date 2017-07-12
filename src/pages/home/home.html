@@ -8,9 +8,7 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content class= "home-content">
-
   <div class="avatar">
     <ion-item no-lines class="home-item-avatar">
       <ion-avatar>
@@ -24,7 +22,6 @@
       <ion-label class= "home-label">Mogwai</ion-label>
     </ion-item>
   </div>
-
   <div>
     <ion-segment [(ngModel)]="userMenuOption" class="home-segment">
       <ion-segment-button value="usuarios">
@@ -35,7 +32,6 @@
       </ion-segment-button>
     </ion-segment>
   </div>
-
   <div [ngSwitch]="userMenuOption">
     <ion-list *ngSwitchCase="'usuarios'">
       <ion-item color="principal">
@@ -57,9 +53,6 @@
         <h2>  Usuario 3</h2>
       </ion-item>
     </ion-list>
-
-
-    <ion-list *ngSwitchCase="'grupos'">
       <ion-item color="principal">
         <ion-avatar item-start >
           <img class="iconListGroup" src="http://www.freeiconspng.com/uploads/group-of-people-icon-22.png">
@@ -79,8 +72,5 @@
         <h2>Grupo 3</h2>
       </ion-item>
     </ion-list>
-
   </div>
-
-
 </ion-content>

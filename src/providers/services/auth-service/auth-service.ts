@@ -9,8 +9,7 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class AuthServiceProvider {
-  responseResult : boolean = false;
-
+  registerResult : boolean = false;
   constructor (private userServiceProvider : UserServiceProvider,
     private localStorageService: LocalStorageService) {
     }
@@ -23,26 +22,44 @@ export class AuthServiceProvider {
           this.userServiceProvider
           .loginUser(credentials)
           .subscribe(response =>  {
-            if(response.hasOwnProperty('status')){
-              if(response['status'] === ResponseStatus.ERROR_INTERNAL_SERVER){
-                observer.next(false);
-                observer.complete();
-              } else if(response['stauts'] === ResponseStatus.ERROR_BAD_REQUEST){
-                observer.next(false);
+            console.log(response);
+            if(response.hasOwnProperty('status')) {
+              if(response['status'] === ResponseStatus.OK) {
+                var jsonData = response.json().data;
+                this.localStorageService
+                .set('credentials', JSON.stringify({token: jsonData.token , username: credentials.username }));
+                console.log(this.localStorageService.get("credentials"));
+                observer.next(true);
                 observer.complete();
               }
-            } else if(response.hasOwnProperty('token')) {
-              console.log(response['token']);
-              this.localStorageService
-              .set('credentials', {token: response['token'] , username: credentials.username });
-              console.log(this.localStorageService.get("credentials"));
-              observer.next(true);
-              observer.complete();
             }
-          } , error => {
-            observer.next(false);
+          } ,
+          error => {
+            observer.next(error);
             observer.complete();
           })
+        });
+      }
+    }
+
+    public register(credentials) {
+      if (credentials.email === null || credentials.password === null || credentials.password_repeat === null) {
+        return Observable.throw("Please insert credentials");
+      } else {
+        return Observable.create(observer => {
+          this.userServiceProvider.registerUser(credentials)
+          .subscribe(response => {
+            if(response.hasOwnProperty('status')){
+              if(response['status'] === ResponseStatus.OK) {
+                observer.next(ResponseStatus.OK);
+                observer.complete();
+              }
+            }
+          } ,
+          error => {
+            observer.next(error);
+            observer.complete();
+          });
         });
       }
     }
@@ -53,29 +70,18 @@ export class AuthServiceProvider {
         this.userServiceProvider
         .logoutUser(JSON.stringify(credentials['token']))
         .subscribe( response => {
-          this.responseResult =  (response['result'] == 'OK')  ? true : false;
-          observer.next(this.responseResult);
-          observer.complete();
+          if(response.hasOwnProperty('status')){
+            if(response['status'] === ResponseStatus.OK) {
+              observer.next(ResponseStatus.OK);
+              observer.complete();
+            }
+          }
         } , error => {
-          observer.next(false);
+          observer.next(error);
           observer.complete();
-        })
+        });
       });
     }
 
-    public register(credentials) {
-      if (credentials.email === null || credentials.password === null || credentials.password_repeat === null) {
-        return Observable.throw("Please insert credentials");
-      } else {
-        return Observable.create(observer => {
-          this.userServiceProvider.registerUser(credentials)
-          .subscribe(response => {
-            this.responseResult =  (response['result'] == 'OK')  ? true : false;
-            observer.next(this.responseResult);
-            observer.complete();
-          });
-        });
-      }
-    }
 
   }

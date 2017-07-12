@@ -24,7 +24,7 @@ export class UserServiceProvider  {
     .get(UserURL.USER_GET_URL)
     .map(this.extractData);
   }
-
+  
   loginUser(user: User): Observable<Response> {
     return this.http
     .post(UserURL.USER_LOGIN_URL,User.toJSONFromUser(user), this.options)
@@ -53,12 +53,10 @@ export class UserServiceProvider  {
   }
 
   extractResponse(res: Response) {
-    let body = res.json();
-    return body || {};
+    return res || {};
   }
 
   handleError (error: Response | any) {
-    console.log(error);
     return Observable.throw(error);
   }
 

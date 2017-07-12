@@ -16,41 +16,41 @@ export class HomePage {
     private localStorageService: LocalStorageService) {
     }
 
-  ngOnInit(): void {
+    ngOnInit(): void {
+
+    }
+
+    logout() {
+      this.showLoading();
+      this.auth.logout().subscribe(allowed => {
+        if (allowed) {
+          this.localStorageService.clearAll();
+          this.loading.dismiss();
+          this.nav.setRoot('LoginPage');
+        } else {
+          this.showError('Logout failed');
+        }
+      },
+      error => {
+        this.showError(error);
+      });
+    }
+
+    showLoading() {
+      this.loading = this.loadingCtrl.create({
+        content: 'Please wait...',
+      });
+      this.loading.present();
+    }
+
+    showError(text) {
+      this.loading.dismiss();
+      let alert = this.alertCtrl.create({
+        title: 'Fail',
+        subTitle: text,
+        buttons: ['OK']
+      });
+      alert.present(prompt);
+    }
 
   }
-
-  logout() {
-    this.showLoading();
-    this.auth.logout().subscribe(allowed => {
-      if (allowed) {
-        this.localStorageService.clearAll();
-        this.loading.dismiss();
-        this.nav.setRoot('LoginPage');
-      } else {
-        this.showError('Logout failed');
-      }
-    },
-    error => {
-      this.showError(error);
-    });
-  }
-
-  showLoading() {
-    this.loading = this.loadingCtrl.create({
-      content: 'Please wait...',
-    });
-    this.loading.present();
-  }
-
-  showError(text) {
-    this.loading.dismiss();
-    let alert = this.alertCtrl.create({
-      title: 'Fail',
-      subTitle: text,
-      buttons: ['OK']
-    });
-    alert.present(prompt);
-  }
-
-}
