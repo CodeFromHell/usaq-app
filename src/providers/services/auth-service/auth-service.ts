@@ -25,8 +25,9 @@ export class AuthServiceProvider {
             if(response.hasOwnProperty('status')) {
               if(response['status'] === ResponseStatus.OK) {
                 var jsonData = response.json().data;
+                console.log(jsonData);
                 this.localStorageService
-                .set('credentials', JSON.stringify({token: jsonData.token , username: jsonData.username }));
+                .set('credentials', {token: jsonData.token , username: credentials.username});
                 observer.next(true);
                 observer.complete();
               }
