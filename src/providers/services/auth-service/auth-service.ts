@@ -76,7 +76,8 @@ export class AuthServiceProvider {
               observer.complete();
             }
           }
-        } , error => {
+        } ,
+        error => {
           observer.next(error);
           observer.complete();
         });

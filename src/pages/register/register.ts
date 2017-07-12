@@ -77,7 +77,6 @@ export class RegisterPage {
         }
       },
       error => {
-        console.log("Awqe");
         this.showPopup("Error", error.json()['detail']);
       });
     }
