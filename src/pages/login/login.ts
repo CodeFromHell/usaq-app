@@ -1,9 +1,10 @@
 import { Component, trigger, state, style, transition, animate } from '@angular/core';
 import { NavController, AlertController, LoadingController, Loading, IonicPage } from 'ionic-angular';
-import { AuthServiceProvider } from '../../providers/services/auth-service/auth-service';
+import { AuthService } from '../../providers/services/auth-service/auth-service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ValidatorUtils } from '../../utils/validatorUtils'
-import { User } from '../../model/entity/User';
+import { ValidatorUtils } from '../../utils/validatorUtils';
+import { ResponseStatus } from '../../constants/response-status-constants';
+
 
 @IonicPage()
 @Component({
@@ -45,7 +46,7 @@ import { User } from '../../model/entity/User';
 
 export class LoginPage {
   loading: Loading;
-  registerCredentials: User;
+  registerCredentials =  { username : '' , password : '' };
   loginPageForm: FormGroup;
 
   /*State animations*/
@@ -53,16 +54,15 @@ export class LoginPage {
   buttonLoginState : any = "in";
   formInputState : any = "in";
 
-  constructor(private nav: NavController, private auth: AuthServiceProvider,
+  constructor(private nav: NavController, private authService: AuthService,
     private alertCtrl: AlertController, private loadingCtrl: LoadingController,
     public formBuilder: FormBuilder) {
       this.init();
     }
 
     public init() {
-      this.registerCredentials = new User('', '');
       this.loginPageForm = this.formBuilder.group({
-        username: ['', Validators.compose([Validators.pattern(ValidatorUtils.REGEX_ALPHANUMERIC), Validators.required])],
+        username: ['', Validators.compose([Validators.pattern(ValidatorUtils.REGEX_ALPHANUMERIC),Validators.minLength(ValidatorUtils.MIN_SIZE_PASSWORD), Validators.required])],
         password: ['', Validators.compose([Validators.minLength(ValidatorUtils.MIN_SIZE_PASSWORD), Validators.required])]
       });
     }
@@ -73,17 +73,15 @@ export class LoginPage {
 
     public login() {
       this.showLoading();
-      this.auth.login(this.registerCredentials).subscribe(response => {
-        if (response === true) {
+      this.authService.login(this.registerCredentials).subscribe(response => {
+        if (response === ResponseStatus.OK) {
           this.loading.dismiss();
           this.nav.setRoot('HomePage');
         } else {
-          this.showError(response.json()['detail']);
+          this.showError(response);
         }
       },
-      error => {
-        console.log("Error", error);
-      });
+    );
     }
 
     showLoading() {
@@ -95,12 +93,11 @@ export class LoginPage {
 
     showError(text) {
       this.loading.dismiss();
-
       let alert = this.alertCtrl.create({
         title: 'Fail',
         subTitle: text,
         buttons: ['OK']
       });
-      alert.present(prompt);
+      alert.present();
     }
   }

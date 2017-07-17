@@ -1,9 +1,9 @@
 import { Component, trigger, state, style, transition, animate } from '@angular/core';
 import { NavController, AlertController, IonicPage } from 'ionic-angular';
-import { AuthServiceProvider } from '../../providers/services/auth-service/auth-service';
+import { AuthService } from '../../providers/services/auth-service/auth-service';
 import { FormBuilder, FormGroup, Validators , AbstractControl } from '@angular/forms';
-import { ValidatorUtils } from '../../utils/validatorUtils'
-import { User } from '../../model/entity/User';
+import { ValidatorUtils } from '../../utils/validatorUtils';
+import { ResponseStatus } from '../../constants/response-status-constants';
 
 @IonicPage()
 @Component({
@@ -45,7 +45,7 @@ import { User } from '../../model/entity/User';
 
 export class RegisterPage {
   createSuccess = false;
-  registerCredentials : User;
+  registerCredentials =  { username : '' , password : '' , password_repeat : '' };
   registerPageForm: FormGroup;
   password_repeat: AbstractControl;
 
@@ -54,13 +54,12 @@ export class RegisterPage {
   buttonRegisterState : any = "in";
   formInputState : any = "in";
 
-  constructor(private nav: NavController, private auth: AuthServiceProvider,
+  constructor(private nav: NavController, private authService: AuthService,
     private alertCtrl: AlertController , public formBuilder: FormBuilder) {
       this.init();
     }
 
     public init() {
-      this.registerCredentials = new User('', '', '');
       this.registerPageForm = this.formBuilder.group({
         username: ['', Validators.compose([Validators.pattern(ValidatorUtils.REGEX_ALPHANUMERIC), Validators.required])],
         password: ['', Validators.compose([Validators.minLength(ValidatorUtils.MIN_SIZE_PASSWORD), Validators.required])],
@@ -70,39 +69,37 @@ export class RegisterPage {
     }
 
     public register() {
-      this.auth.register(this.registerCredentials).subscribe(response => {
-        if (response === true) {
+      this.authService.register(this.registerCredentials).subscribe(response => {
+        if (response === ResponseStatus.OK) {
           this.createSuccess = true;
           this.showPopup("Success", "Account created.");
         } else {
-          this.showPopup("Error", response.json()['detail']);
+          this.showPopup("Error", response);
         }
       },
-      error => {
-        console.log("Error", error);
-      });
-    }
+    );
+  }
 
-    public goToLogin(){
-      this.nav.push('LoginPage');
-    }
+  public goToLogin(){
+    this.nav.push('LoginPage');
+  }
 
-    showPopup(title, text) {
-      let alert = this.alertCtrl.create({
-        title: title,
-        subTitle: text,
-        buttons: [
-          {
-            text: 'OK',
-            handler: data => {
-              if (this.createSuccess) {
-                this.nav.setRoot('HomePage');
-                this.nav.popToRoot();
-              }
+  showPopup(title, text) {
+    let alert = this.alertCtrl.create({
+      title: title,
+      subTitle: text,
+      buttons: [
+        {
+          text: 'OK',
+          handler: data => {
+            if (this.createSuccess) {
+              this.nav.setRoot('HomePage');
+              this.nav.popToRoot();
             }
           }
-        ]
-      });
-      alert.present();
-    }
+        }
+      ]
+    });
+    alert.present();
   }
+}

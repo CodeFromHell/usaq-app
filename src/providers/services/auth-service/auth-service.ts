@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { LocalStorageService } from 'angular-2-local-storage';
-import { UserServiceProvider } from '../user-service/user-service';
+import { AuthAPIService } from './auth-api-service';
+import { User } from '../../../model/entity/user/User';
 import { ResponseStatus } from '../../../constants/response-status-constants';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 @Injectable()
-export class AuthServiceProvider {
+export class AuthService {
 
-  constructor (private userServiceProvider : UserServiceProvider,
+  constructor (private authAPIService: AuthAPIService,
     private localStorageService: LocalStorageService) {
     }
 
@@ -19,22 +20,17 @@ export class AuthServiceProvider {
         return Observable.throw("Please insert credentials");
       } else {
         return Observable.create(observer => {
-          this.userServiceProvider
-          .loginUser(credentials)
+          this.authAPIService
+          .login(credentials)
           .subscribe(response =>  {
-            if(response.hasOwnProperty('status')) {
-              if(response['status'] === ResponseStatus.OK) {
                 var jsonData = response.json().data;
-                console.log(jsonData);
                 this.localStorageService
-                .set('credentials', {token: jsonData.token , username: credentials.username});
-                observer.next(true);
+                .set('credentials', { token: jsonData.token  , user : jsonData.user});
+                observer.next(ResponseStatus.OK);
                 observer.complete();
-              }
-            }
           } ,
           error => {
-            observer.next(error);
+            observer.next(error.json()['detail']);
             observer.complete();
           })
         });
@@ -42,46 +38,36 @@ export class AuthServiceProvider {
     }
 
     public register(credentials) {
-      if (credentials.email === null || credentials.password === null || credentials.password_repeat === null) {
+      if (credentials.email === null || credentials.password === null ||
+        credentials.password_repeat === null) {
         return Observable.throw("Please insert credentials");
       } else {
         return Observable.create(observer => {
-          this.userServiceProvider.registerUser(credentials)
+          this.authAPIService.register(credentials)
           .subscribe(response => {
-            if(response.hasOwnProperty('status')){
-              if(response['status'] === ResponseStatus.OK) {
-                observer.next(true);
+                observer.next(ResponseStatus.OK);
                 observer.complete();
-              }
-            }
           } ,
           error => {
-            observer.next(error);
+            observer.next(error.json()['detail']);
             observer.complete();
           });
         });
       }
     }
 
-    public logout() {
-      var credentials : {} =  this.localStorageService.get("credentials");
+    public logout(credentials) {
       return Observable.create(observer => {
-        this.userServiceProvider
-        .logoutUser(JSON.stringify(credentials['token']))
+        this.authAPIService
+        .logout(credentials['token'])
         .subscribe( response => {
-          if(response.hasOwnProperty('status')){
-            if(response['status'] === ResponseStatus.OK) {
-              observer.next(true);
+              observer.next(ResponseStatus.OK);
               observer.complete();
-            }
-          }
         } ,
         error => {
-          observer.next(error);
+          observer.next(error.json()['detail']);
           observer.complete();
         });
       });
     }
-
-
   }

@@ -8,8 +8,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { MyApp } from './app.component';
 
-import { AuthServiceProvider } from '../providers/services/auth-service/auth-service';
-import { UserServiceProvider } from '../providers/services/user-service/user-service';
+import { AuthService } from '../providers/services/auth-service/auth-service';
+import { AuthAPIService } from '../providers/services/auth-service/auth-api-service';
+import { UserService } from '../providers/services/user-service/user-service';
+import { UserAPIService } from '../providers/services/user-service/user-api-service';
 
 @NgModule({
   declarations: [
@@ -33,8 +35,10 @@ import { UserServiceProvider } from '../providers/services/user-service/user-ser
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthServiceProvider,
-    UserServiceProvider
+    AuthService,
+    AuthAPIService,
+    UserService,
+    UserAPIService
   ]
 })
 export class AppModule {}

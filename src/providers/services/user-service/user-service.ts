@@ -1,63 +1,34 @@
 import { Injectable } from '@angular/core';
-import { Observable }     from 'rxjs/Observable';
-import { Http, Response } from '@angular/http';
-import { Headers, RequestOptions } from '@angular/http';
-import { User } from '../../../model/entity/User';
-import { UserURL } from '../../../constants/user-url-constants';
-
-import 'rxjs/add/observable/throw';
+import { Observable } from 'rxjs/Observable';
+import { UserAPIService } from './user-api-service';
+import { ResponseStatus } from '../../../constants/response-status-constants';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 @Injectable()
-export class UserServiceProvider  {
-  private headers = new Headers();
-  private options : RequestOptions;
+export class UserService {
 
-  constructor(private http: Http) {
-    this.headers.append('Content-Type', 'application/json');
-    this.headers.append('Accept' , 'application/json');
-    this.options = new RequestOptions({ headers: this.headers });
+  constructor (private userAPIService: UserAPIService) {
   }
 
-  getUser(username: string): Observable<User> {
-    return this.http
-    .get(UserURL.USER_GET_URL)
-    .map(this.extractData);
+  public getAll(credentials) {
+    if (credentials === null) {
+      return Observable.throw("xxxx");
+    } else {
+      return Observable.create(observer => {
+        console.log(credentials['user']);
+        this.userAPIService
+        .getAll(credentials['token'] , credentials['user'].data)
+        .subscribe(response =>  {
+          observer.next({status: response.status , _body : JSON.parse(response._body)});
+          observer.complete();
+        } ,
+        error => {
+          observer.next(error);
+          observer.complete();
+        })
+      });
+    }
   }
-  
-  loginUser(user: User): Observable<Response> {
-    return this.http
-    .post(UserURL.USER_LOGIN_URL,User.toJSONFromUser(user), this.options)
-    .map(this.extractResponse)
-    .catch(this.handleError);
-  }
-
-  registerUser(user:User): Observable<Response> {
-    return this.http
-    .post(UserURL.USER_REGISTER_URL, User.toJSONFromUser(user), this.options)
-    .map(this.extractResponse)
-    .catch(this.handleError);
-  }
-
-  logoutUser(token : string){
-    this.headers.append('X-Auth-Token' , token);
-    this.options = new RequestOptions({ headers: this.headers });
-    return this.http
-    .post(UserURL.USER_LOGOUT_URL, token , this.options)
-    .map(this.extractResponse)
-    .catch(this.handleError);
-  }
-
-  extractData(res: Response) : User {
-    return User.toUserFromJSON(res.json().data);
-  }
-
-  extractResponse(res: Response) {
-    return res || {};
-  }
-
-  handleError (error: Response | any) {
-    return Observable.throw(error);
-  }
-
 }
