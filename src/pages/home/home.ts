@@ -13,8 +13,8 @@ import { ResponseStatus } from '../../constants/response-status-constants';
 })
 export class HomePage implements OnInit {
   loading: Loading;
-  credentials = {};
   response : Response;
+  credentials : {};
   userList : User[];
   userCount : Number;
 
@@ -22,10 +22,10 @@ export class HomePage implements OnInit {
     private userService: UserService,
     private alertCtrl: AlertController, private loadingCtrl: LoadingController,
     private localStorageService: LocalStorageService) {
-      this.credentials = this.localStorageService.get('credentials');
     }
 
     ngOnInit(){
+      this.credentials = this.localStorageService.get('credentials');
       this.getUserList();
     }
 
