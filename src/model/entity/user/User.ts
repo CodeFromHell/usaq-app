@@ -1,5 +1,5 @@
 export class User {
-  constructor(public id : string , public username: string,public nickname : string) {
+  constructor(public id : string , public username: string,public nickname : string, public imageProfile? : string) {
   }
 
   static  toUserFromJSON(data : string){
@@ -10,5 +10,10 @@ export class User {
 
   static  toJSONFromUser(user : User){
     return JSON.stringify(user);
+  }
+
+  static  toJSONFromUserFriend(user : User){
+    var jsonFriend = { "friend_id" : user.id }
+    return JSON.stringify(jsonFriend);
   }
 }

@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar color="principal">
+    <button ion-button menuToggle right (click)="logout()" type="submit">
+      <ion-icon name="exit"></ion-icon>
+    </button>
+    <button ion-button menuToggle left navPop type="submit">
+      <ion-icon name="arrow-back"></ion-icon>
+    </button>
+    <ion-title center>
+      Add Friend
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class= "home-content">
+  <div [ngSwitch]="userMenuOption">
+    <ion-list>
+      <ion-item color="principal" (click) = "addFriend(user)" *ngFor="let user of userList">
+        <ion-avatar item-start>
+          <img class="iconListUser"
+          src="https://media.giphy.com/media/ytwDCveyFztWxY30ac/giphy.gif" />
+        </ion-avatar>
+        <h2>{{ user.username }}</h2>
+        <ion-icon name="ion-plus-circled"></ion-icon>
+        <ion-icon item-end name="ios-person-add-outline"></ion-icon>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

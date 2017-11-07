@@ -5,6 +5,7 @@ import { UserService }  from '../../providers/services/user-service/user-service
 import { LocalStorageService } from 'angular-2-local-storage';
 import { User } from '../../model/entity/user/User';
 import { ResponseStatus } from '../../constants/response-status-constants';
+import { GifProfiles } from '../../constants/gif-profiles';
 
 @IonicPage()
 @Component({
@@ -15,8 +16,8 @@ export class HomePage implements OnInit {
   loading: Loading;
   response : Response;
   credentials : {};
-  userList : User[];
-  userCount : Number;
+  user : User;
+  profileImage : string = "";
 
   constructor(private nav: NavController, private authService: AuthService,
     private userService: UserService,
@@ -26,26 +27,66 @@ export class HomePage implements OnInit {
 
     ngOnInit(){
       this.credentials = this.localStorageService.get('credentials');
-      this.getUserList();
+      this.user = this.credentials['user'].data;
+      this.getProfileImage();
     }
 
-    getUserList() {
-      this.showLoading();
-      this.userService.getAll(this.credentials).subscribe(response => {
-        if(response.status === ResponseStatus.OK) {
-          this.loading.dismiss();
-          this.userList  = response._body.data;
-          this.userCount = response._body.meta.count;
-        } else {
-          this.showError('Users list failed');
+
+    getProfileImage(){
+      switch(this.user.username){
+        case 'Maite' :
+        this.profileImage = GifProfiles.GATETE;
+        break;
+        case  'Alex':
+        this.profileImage = GifProfiles.MONETE;
+        break;
+        case  'ffff':
+        this.profileImage = GifProfiles.LLAMA;
+        break;
+        case  'aaaa':
+        this.profileImage = GifProfiles.CARTON;
+        break;
+        case 'xxxx' :
+        this.profileImage = GifProfiles.PERRETE;
+        break;
+        default:
+        this.profileImage = GifProfiles.FUCKYOU;
+      }
+    }
+
+    presentPrompt() {
+    let alert = this.alertCtrl.create({
+      title: 'GIF',
+      inputs: [
+        {
+          name: 'profileURL',
+          placeholder: 'GIF / Image Url'
         }
-      },
-    );
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'OK',
+          handler: data => {
+            if(data['profileURL']) {
+              this.profileImage =  data['profileURL'];
+            }
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   logout() {
     this.showLoading();
-    this.authService.logout(this.credentials).subscribe(response => {
+    this.authService.logout().subscribe(response => {
       if (response === ResponseStatus.OK) {
         this.localStorageService.clearAll();
         this.loading.dismiss();
@@ -58,6 +99,7 @@ export class HomePage implements OnInit {
       console.log("Error", error);
     });
   }
+
 
   showLoading() {
     this.loading = this.loadingCtrl.create({

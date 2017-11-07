@@ -12,20 +12,20 @@
   <div class="avatar">
     <ion-item no-lines class="home-item-avatar">
       <ion-avatar>
-        <img src="https://www.xfball.com/Content/img/profile-img-none.png">
-        <button class="ion-button-profile" ion-fab mini>
+        <img src={{profileImage}}>
+        <button class="ion-button-profile" (click) = "presentPrompt()" ion-fab mini>
           <ion-icon name="camera"></ion-icon>
         </button>
       </ion-avatar>
     </ion-item>
     <ion-item no-lines class="home-item-avatar">
-      <ion-label class= "home-label">{{credentials.username}}</ion-label>
+      <ion-label class= "home-label">{{user.username}}</ion-label>
     </ion-item>
   </div>
   <div>
     <ion-segment [(ngModel)]="userMenuOption" class="home-segment">
-      <ion-segment-button value="usuarios" (click)="getUserList()">
-        Usuarios ( {{userCount}} )
+      <ion-segment-button value="usuarios">
+        Amigos
       </ion-segment-button>
       <ion-segment-button value="grupos">
         Grupos
@@ -33,16 +33,6 @@
     </ion-segment>
   </div>
   <div [ngSwitch]="userMenuOption">
-      <ion-list *ngSwitchCase="'usuarios'" >
-        <ion-item color="principal" *ngFor="let user of userList">
-          <ion-avatar item-start>
-            <img class="iconListUser"
-            src="https://www.xfball.com/Content/img/profile-img-none.png" />
-          </ion-avatar>
-          <h2>{{ user.username }}</h2>
-        </ion-item>
-      </ion-list>
-    <ion-list *ngSwitchCase="'grupos'">
-    </ion-list>
-  </div>
-</ion-content>
+      <list-friend  *ngSwitchCase="'usuarios'"></list-friend>
+    </div>
+  </ion-content>

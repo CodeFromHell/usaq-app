@@ -1,0 +1,10 @@
+<ion-list>
+    <ion-fab bottom right class="ion-fab">
+      <button ion-fab mini (click)="goToAddFriends()">
+        <ion-icon name="person-add"> </ion-icon>
+      </button>
+    </ion-fab>
+    <ion-item color="principal" *ngFor="let friend of friendList">
+      <item-list-friend [friend] = "friend" [friendList] = "friendList"> </item-list-friend>
+    </ion-item>
+</ion-list>

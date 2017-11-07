@@ -10,9 +10,11 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class AuthService {
+  credentials : {};
 
   constructor (private authAPIService: AuthAPIService,
     private localStorageService: LocalStorageService) {
+      this.credentials = this.localStorageService.get('credentials');
     }
 
     public login(credentials) {
@@ -23,11 +25,11 @@ export class AuthService {
           this.authAPIService
           .login(credentials)
           .subscribe(response =>  {
-                var jsonData = response.json().data;
-                this.localStorageService
-                .set('credentials', { token: jsonData.token  , user : jsonData.user});
-                observer.next(ResponseStatus.OK);
-                observer.complete();
+            var jsonData = response.json().data;
+            this.localStorageService
+            .set('credentials', { token: jsonData.token  , user : jsonData.user});
+            observer.next(ResponseStatus.OK);
+            observer.complete();
           } ,
           error => {
             observer.next(error.json()['detail']);
@@ -40,13 +42,29 @@ export class AuthService {
     public register(credentials) {
       if (credentials.email === null || credentials.password === null ||
         credentials.password_repeat === null) {
-        return Observable.throw("Please insert credentials");
-      } else {
+          return Observable.throw("Please insert credentials");
+        } else {
+          return Observable.create(observer => {
+            this.authAPIService.register(credentials)
+            .subscribe(response => {
+              observer.next(ResponseStatus.OK);
+              observer.complete();
+            } ,
+            error => {
+              observer.next(error.json()['detail']);
+              observer.complete();
+            });
+          });
+        }
+      }
+
+      public logout() {
         return Observable.create(observer => {
-          this.authAPIService.register(credentials)
-          .subscribe(response => {
-                observer.next(ResponseStatus.OK);
-                observer.complete();
+          this.authAPIService
+          .logout(this.credentials['token'])
+          .subscribe( response => {
+            observer.next(ResponseStatus.OK);
+            observer.complete();
           } ,
           error => {
             observer.next(error.json()['detail']);
@@ -55,19 +73,3 @@ export class AuthService {
         });
       }
     }
-
-    public logout(credentials) {
-      return Observable.create(observer => {
-        this.authAPIService
-        .logout(credentials['token'])
-        .subscribe( response => {
-              observer.next(ResponseStatus.OK);
-              observer.complete();
-        } ,
-        error => {
-          observer.next(error.json()['detail']);
-          observer.complete();
-        });
-      });
-    }
-  }

@@ -8,6 +8,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { MyApp } from './app.component';
 
+import { AddFriendsPage } from '../pages/friends/add-friends';
+
 import { AuthService } from '../providers/services/auth-service/auth-service';
 import { AuthAPIService } from '../providers/services/auth-service/auth-api-service';
 import { UserService } from '../providers/services/user-service/user-service';
@@ -15,7 +17,8 @@ import { UserAPIService } from '../providers/services/user-service/user-api-serv
 
 @NgModule({
   declarations: [
-    MyApp
+    MyApp,
+    AddFriendsPage,
   ],
   imports: [
     BrowserModule,
@@ -29,7 +32,8 @@ import { UserAPIService } from '../providers/services/user-service/user-api-serv
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp
+    MyApp,
+    AddFriendsPage
   ],
   providers: [
     StatusBar,
