@@ -5,6 +5,7 @@ import { UserService }  from '../../providers/services/user-service/user-service
 import { LocalStorageService } from 'angular-2-local-storage';
 import { User } from '../../model/entity/user/User';
 import { ResponseStatus } from '../../constants/response-status-constants';
+import { HomePage } from '../../pages/home/home';
 
 @IonicPage()
 @Component({
@@ -75,6 +76,10 @@ export class AddFriendsPage {
     error => {
       console.log("Error", error);
     });
+  }
+
+  goToHome(){
+      this.nav.setRoot(HomePage);
   }
 
   showLoading() {

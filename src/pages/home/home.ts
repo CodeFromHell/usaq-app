@@ -32,6 +32,10 @@ export class HomePage implements OnInit {
     }
 
 
+    ionViewDidEnter() {
+      console.log("I'm alive!");
+    }
+
     getProfileImage(){
       switch(this.user.username){
         case 'Maite' :
